@@ -1,3 +1,4 @@
+<<<<<< HEAD
 # 🎌 Nimestream - Anime Streaming Platform
 
 Nimestream adalah platform streaming anime modern yang dibangun dengan Next.js 16, menyediakan pengalaman menonton anime yang lancar dan responsif dengan fitur-fitur canggih.
@@ -46,3 +47,6 @@ nimestream/
 └── public/              # Static assets
 ```
  - Icon library
+=======
+# ZikanimeV2
+>>>>>>> 5956936d9482f0f5043f7623cb024329aad2fd5f
