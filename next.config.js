@@ -1,6 +1,19 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true
+module.exports = {
+    reactStrictMode: true,
+    images: { domains: ["*"] },
+    headers: async () => {
+        return [
+            {
+                source: "/anime/watch",
+                headers: [
+                    { key: "X-Frame-Options", value: "ALLOWALL" },
+                    {
+                        key: "Content-Security-Policy",
+                        value: "frame-ancestors *;"
+                    }
+                ]
+            }
+        ];
+    }
 };
-
-module.exports = nextConfig;
