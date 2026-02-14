@@ -38,14 +38,17 @@ Clone repository:
 ```bash
 git clone https://github.com/USERNAME/zikanime.git
 cd zikanime
+```
 Install dependencies:
 Salin kode
-Bash
+```Bash
 npm install
+```
 Jalankan development server:
 Salin kode
-Bash
+```Bash
 npm run dev
+```
 Buka di browser:
 Salin kode
 
