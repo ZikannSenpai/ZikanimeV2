@@ -44,7 +44,7 @@ export default function Home() {
                         {items.length === 0 ? (
                             <div>Loading...</div>
                         ) : (
-                            items.map((it: any) => (
+                            {Array.isArray(items) && items.map((it) => (
                                 <AnimeCard
                                     key={it.id || it.slug || it.title}
                                     data={it}
