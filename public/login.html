@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Zikanime - Login</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body class="landing-page">
+        <div class="scanline"></div>
+
+        <div class="sidebar">
+            <div class="logo">Zikanime</div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link"> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profile" class="nav-link"> Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/riwayat" class="nav-link"> Riwayat</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/login" class="nav-link active"> Login</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="auth-container">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required
+                    />
+                    <button type="submit">Login</button>
+                    <div id="login-error" class="error"></div>
+                </form>
+                <p>
+                    Belum punya akun?
+                    <a href="#" onclick="showRegister()">Daftar</a>
+                </p>
+
+                <div id="register-form-container" style="display: none">
+                    <h2>Daftar</h2>
+                    <form id="register-form">
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Username"
+                            required
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            required
+                        />
+                        <button type="submit">Daftar</button>
+                        <div id="register-error" class="error"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="/script.js"></script>
+        <script>
+            function showRegister() {
+                document.getElementById(
+                    "register-form-container"
+                ).style.display = "block";
+            }
+        </script>
+    </body>
+</html>

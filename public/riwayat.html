@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Zikanime - Riwayat</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body class="landing-page">
+        <div class="scanline"></div>
+
+        <div class="sidebar">
+            <div class="logo">Zikanime</div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link"> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/profile" class="nav-link"> Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/riwayat" class="nav-link active"> Riwayat</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/login" class="nav-link" id="login-logout-link">
+                        Login</a
+                    >
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <h1>Riwayat Tontonan</h1>
+            <ul id="history-list" class="history-list">
+                <!-- Akan diisi JS -->
+            </ul>
+        </div>
+
+        <script src="/script.js"></script>
+        <script>
+            (async function () {
+                try {
+                    await getProfile(); // cek login
+                    const link = document.getElementById("login-logout-link");
+                    link.textContent = "🚪 Logout";
+                    link.href = "#";
+                    link.addEventListener("click", async e => {
+                        e.preventDefault();
+                        await logout();
+                        window.location.href = "/";
+                    });
+                } catch {
+                    window.location.href = "/login";
+                }
+            })();
+        </script>
+    </body>
+</html>

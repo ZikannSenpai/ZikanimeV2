@@ -1,0 +1,626 @@
+/* fix */
+html {
+    overflow-x: hidden;
+    width: 100%;
+    scrollbar-gutter: stable;
+}
+body {
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* docs html (kita pakai sebagai dasar) */
+body.docs-page {
+    touch-action: manipulation;
+    background-color: #f8fafc;
+    background-image: radial-gradient(#c4b5fd 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+}
+
+.docs-page::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://c.termai.cc/i135/xqR.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Scrollbar styles for docs page */
+.docs-page ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.docs-page ::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-left: 2px solid #c4b5fd;
+}
+.docs-page ::-webkit-scrollbar-thumb {
+    background: #8b5cf6;
+    border: 2px solid #e2e8f0;
+}
+.docs-page ::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+}
+
+/* Scanline animation */
+.docs-page .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(139, 92, 246, 0.05) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% {
+        bottom: 100%;
+    }
+    100% {
+        bottom: -100%;
+    }
+}
+
+/* CRT text effect */
+.docs-page .crt-text {
+    text-shadow: 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+/* Marquee/ticker animation */
+.docs-page .marquee-container {
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 10%,
+        black 90%,
+        transparent
+    );
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.docs-page .animate-ticker {
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+    display: inline-block;
+    padding-left: 100%;
+}
+
+/* Spin animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.docs-page .animate-spin-slow {
+    animation: spin 4s linear infinite;
+}
+
+/* JSON syntax highlighting */
+.docs-page .json-key {
+    color: #8b5cf6;
+    font-weight: bold;
+}
+.docs-page .json-string {
+    color: #0ea5e9;
+}
+.docs-page .json-number {
+    color: #f59e0b;
+}
+.docs-page .json-boolean {
+    color: #10b981;
+    font-weight: bold;
+}
+.docs-page .json-null {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Terminal color classes */
+.docs-page .term-success {
+    color: #10b981;
+}
+.docs-page .term-error {
+    color: #ef4444;
+}
+.docs-page .term-warn {
+    color: #f59e0b;
+}
+.docs-page .term-info {
+    color: #38bdf8;
+}
+
+/* Falling flowers animation (optional) */
+@keyframes fall {
+    0% {
+        top: -50px;
+        opacity: 0.8;
+        transform: translateX(0) rotate(0deg);
+    }
+    100% {
+        top: 100vh;
+        opacity: 0;
+        transform: translateX(100px) rotate(360deg);
+    }
+}
+@keyframes sway {
+    0%,
+    100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    50% {
+        transform: translateX(30px) rotate(180deg);
+    }
+}
+.docs-page .falling-flower {
+    position: fixed;
+    top: -50px;
+    z-index: 9999;
+    pointer-events: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    animation:
+        fall linear forwards,
+        sway ease-in-out infinite;
+    opacity: 0;
+}
+
+/* Landing page (kita pakai untuk halaman utama) */
+body.landing-page {
+    background-color: #f3f4f6;
+    background-image:
+        linear-gradient(#e5e7eb 1px, transparent 1px),
+        linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+    background-size: 24px 24px;
+    touch-action: manipulation;
+}
+
+.landing-page ::-webkit-scrollbar {
+    width: 8px;
+}
+.landing-page ::-webkit-scrollbar-track {
+    background: #fff;
+    border-left: 2px solid #000;
+}
+.landing-page ::-webkit-scrollbar-thumb {
+    background: #000;
+}
+.landing-page ::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+/* Skeleton loading animation */
+.landing-page .skeleton {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 0px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+/* donasi page (tidak dipakai tapi tetap ada) */
+body.donasi-page {
+    background-color: #f3f4f6;
+    background-image:
+        linear-gradient(#e5e7eb 1px, transparent 1px),
+        linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+    background-size: 24px 24px;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.donasi-page ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* Pop animation for modals */
+.donasi-page .animate-pop {
+    animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popUp {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Input and button reset for donasi page */
+.donasi-page input,
+.donasi-page button {
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+/* existing global scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track {
+    background: #0c0c0c;
+    border-left: 1px solid #333;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #ffb000;
+    border: 2px solid #0c0c0c;
+    border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #ffcc00;
+}
+::-webkit-scrollbar-corner {
+    background: #0c0c0c;
+}
+::selection {
+    background: #ffb000;
+    color: #000;
+}
+
+body {
+    background-image: radial-gradient(#333 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: #e0e0e0;
+    scrollbar-width: thin;
+    scrollbar-color: #ffb000 #0c0c0c;
+}
+
+.scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 10;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(255, 255, 255, 0.04) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% {
+        bottom: 100%;
+    }
+    100% {
+        bottom: -100%;
+    }
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.string {
+    color: #a5d6ff;
+}
+.number {
+    color: #ff7b72;
+}
+.boolean {
+    color: #79c0ff;
+}
+.key {
+    color: #d2a8ff;
+}
+
+/* ===== KUSTOM UNTUK ZIKANIME ===== */
+/* Navbar kiri */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background-color: #0c0c0c;
+    border-right: 2px solid #ffb000;
+    padding: 20px 0;
+    box-sizing: border-box;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffb000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 15px;
+}
+
+.sidebar .nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .nav-item {
+    margin: 5px 0;
+}
+
+.sidebar .nav-link {
+    display: block;
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: #1a1a1a;
+    border-left-color: #ffb000;
+    color: #ffb000;
+}
+
+/* Konten utama dengan margin kiri */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Grid anime */
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.anime-card {
+    background: #fff;
+    border: 2px solid #000;
+    transition:
+        transform 0.2s,
+        opacity 0.2s,
+        box-shadow 0.2s;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.anime-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.anime-card:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.anime-card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    border-bottom: 2px solid #000;
+}
+
+.anime-card .info {
+    padding: 10px;
+}
+
+.anime-card .title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anime-card .episode {
+    font-size: 12px;
+    color: #555;
+}
+
+/* Form login/register */
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background: #fff;
+    border: 2px solid #000;
+    padding: 30px;
+}
+
+.auth-container h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #ffb000;
+    padding-bottom: 10px;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    background: #ffb000;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #000;
+    transition: 0.2s;
+}
+
+.auth-container button:hover {
+    background: #ffcc00;
+}
+
+.auth-container button:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.auth-container .error {
+    color: red;
+    margin: 10px 0;
+}
+
+/* Profile page */
+.profile-info {
+    background: #fff;
+    border: 2px solid #000;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-info p {
+    margin: 10px 0;
+}
+
+/* History list */
+.history-list {
+    list-style: none;
+    padding: 0;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #000;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.history-item img {
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 1px solid #000;
+}
+
+.history-item .details {
+    flex: 1;
+}
+
+.history-item .title {
+    font-weight: bold;
+}
+
+.history-item .episode {
+    color: #555;
+    font-size: 14px;
+}
+
+.history-item .date {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Efek fade/zoom untuk elemen yang ditekan (bisa diterapkan ke card atau tombol) */
+.press-effect:active {
+    animation: fadeZoom 0.2s ease;
+}
+
+@keyframes fadeZoom {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 2px solid #ffb000;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    .sidebar .nav-menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .sidebar .nav-item {
+        margin: 0 5px;
+    }
+    .sidebar .nav-link {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+        border-bottom-color: #ffb000;
+    }
+}
