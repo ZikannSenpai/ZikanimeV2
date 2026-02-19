@@ -1,48 +1,36 @@
-import clientPromise from "../../../lib/mongodb";
-import jwt from "jsonwebtoken";
+// pages/api/auth/register.js
+import { connectToDatabase } from "../../../lib/mongodb";
+import User from "../../../models/User";
+import bcrypt from "bcryptjs";
 
 export default async function handler(req, res) {
-    console.log("[api/auth/register] method", req.method);
+    console.log("[api/register] called", req.method);
     if (req.method !== "POST")
         return res.status(405).json({ error: "Method not allowed" });
 
-    const { email, password, name } = req.body || {};
-    console.log("[api/auth/register] body", { email, name });
-
-    if (!email || !password)
-        return res.status(400).json({ error: "Missing email/password" });
-
     try {
-        const client = await clientPromise;
-        const db = client.db("zikanime");
-        const users = db.collection("users");
+        const { username, email, password } = req.body;
+        console.log("[api/register] payload:", { username, email });
+        await connectToDatabase();
 
-        const existing = await users.findOne({ email });
-        if (existing) return res.status(409).json({ error: "User exists" });
+        const exists = await User.findOne({ username });
+        if (exists) {
+            console.log("[api/register] username exists:", username);
+            return res.status(400).json({ error: "Username already exists" });
+        }
 
-        const user = {
+        const passwordHash = await bcrypt.hash(password, 10);
+        const user = new User({
+            username,
             email,
-            password,
-            name: name || "",
-            createdAt: new Date(),
-            history: []
-        };
-        const insert = await users.insertOne(user);
-        console.log("[api/auth/register] user inserted", insert.insertedId);
-
-        const token = jwt.sign(
-            { sub: insert.insertedId.toString(), email },
-            process.env.JWT_SECRET || "devsecret",
-            { expiresIn: "30d" }
-        );
-
-        res.setHeader(
-            "Set-Cookie",
-            `token=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 30}`
-        );
-        res.status(201).json({ ok: true, user: { email, name } });
+            passwordHash,
+            profile: { displayName: username }
+        });
+        await user.save();
+        console.log("[api/register] user saved:", user._id);
+        res.status(201).json({ ok: true, userId: user._id });
     } catch (err) {
-        console.error("[api/auth/register] error", err);
-        res.status(500).json({ error: err.message });
+        console.error("[api/register] error", err);
+        res.status(500).json({ error: "Server error" });
     }
 }

@@ -1,139 +1,123 @@
-/* --- include your provided CSS, slightly adapted --- */
-/* fix */
-html {
-    overflow-x: hidden;
-    width: 100%;
-    scrollbar-gutter: stable;
+:root {
+    --bg: #05060a;
+    --panel: #0f1724;
+    --accent: #0ea5ff; /* biru neon */
+    --muted: #8892a6;
+    --glass: rgba(255, 255, 255, 0.03);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        Segoe UI,
+        Roboto,
+        "Helvetica Neue",
+        Arial;
+}
+
+html,
+body,
+#__next {
+    height: 100%;
 }
 body {
-    width: 100%;
-    overflow-x: hidden;
+    background: var(--bg);
+    color: #e6eef8;
 }
 
-/* copy user CSS block (shortened here — full set present in repo) */
-/* (paste the entire CSS you gave into this file in the repo) */
-
-/* basic layout */
-.container {
-    max-width: 1200px;
-    margin: 24px auto;
-    padding: 16px;
-}
-.navbar {
+/* layout */
+.app {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.06);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-}
-.logo {
-    font-weight: 700;
-    font-size: 20px;
-}
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 16px;
-}
-.anime-card {
-    display: block;
-    border-radius: 8px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transform: translateZ(0);
-    transition:
-        transform 0.22s ease,
-        box-shadow 0.22s ease,
-        opacity 0.22s ease;
-}
-.anime-card img {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    display: block;
-}
-.anime-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+    min-height: 100vh;
 }
 
-/* input focus animations */
-.input-field {
-    width: 100%;
+/* left navbar */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, var(--panel), #071026);
+    padding: 20px;
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+.sidebar .brand {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* main content */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* cards */
+.card {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.01)
+    );
+    border-radius: 10px;
     padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+}
+
+/* input focus effect: fade in/out + zoom on focus */
+.input {
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 10px 12px;
+    border-radius: 8px;
     transition:
         transform 0.18s ease,
-        box-shadow 0.18s ease;
+        box-shadow 0.18s ease,
+        background 0.18s ease;
 }
-.input-field:focus {
-    outline: none;
+.input:focus {
     transform: scale(1.02);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 24px rgba(14, 165, 255, 0.12);
+    outline: none;
+    background: rgba(255, 255, 255, 0.035);
 }
 
-/* fade/zoom utils */
+/* fade in animation for containers */
 .fade-in {
-    animation: fadeIn 0.28s ease both;
+    animation: fadeIn 0.36s ease both;
 }
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: translateY(6px);
     }
     to {
         opacity: 1;
-    }
-}
-.zoom-in {
-    animation: zoomIn 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-@keyframes zoomIn {
-    from {
-        transform: scale(0.98);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-.auth-box {
-    max-width: 360px;
-    margin: 60px auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 10px;
+/* small helper */
+.row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
 }
 .btn {
-    background: #8b5cf6;
-    color: #fff;
-    padding: 10px 14px;
+    background: var(--accent);
+    color: #001029;
+    padding: 8px 12px;
+    border-radius: 8px;
     border: none;
-    border-radius: 6px;
     cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.12s ease;
 }
 .btn:active {
-    transform: scale(0.995);
-}
-
-/* video wrap */
-.video-wrap {
-    margin-top: 12px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #000;
-}
-
-pre {
-    white-space: pre-wrap;
-    background: rgba(0, 0, 0, 0.04);
-    padding: 12px;
-    border-radius: 8px;
+    transform: scale(0.98);
 }

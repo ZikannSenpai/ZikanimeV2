@@ -1,41 +1,41 @@
-import clientPromise from "../../../lib/mongodb";
+// pages/api/auth/login.js
+import { connectToDatabase } from "../../../lib/mongodb";
+import User from "../../../models/User";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export default async function handler(req, res) {
-    console.log("[api/auth/login] method", req.method);
+    console.log("[api/login] called", req.method);
     if (req.method !== "POST")
         return res.status(405).json({ error: "Method not allowed" });
-
-    const { email, password } = req.body || {};
-    console.log("[api/auth/login] body", { email });
-
-    if (!email || !password)
-        return res.status(400).json({ error: "Missing email/password" });
-
     try {
-        const client = await clientPromise;
-        const db = client.db("zikanime");
-        const users = db.collection("users");
-
-        const user = await users.findOne({ email, password });
-        if (!user)
+        const { username, password } = req.body;
+        console.log("[api/login] payload:", { username });
+        await connectToDatabase();
+        const user = await User.findOne({ username });
+        if (!user) {
+            console.log("[api/login] user not found:", username);
             return res.status(401).json({ error: "Invalid credentials" });
+        }
+        const ok = await bcrypt.compare(password, user.passwordHash);
+        if (!ok) {
+            console.log("[api/login] password mismatch for:", username);
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
 
         const token = jwt.sign(
-            { sub: user._id.toString(), email },
-            process.env.JWT_SECRET || "devsecret",
-            { expiresIn: "30d" }
+            { sub: user._id, username: user.username },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
         );
         res.setHeader(
             "Set-Cookie",
-            `token=${token}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 30}`
+            `token=${token}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}`
         );
-        res.status(200).json({
-            ok: true,
-            user: { email: user.email, name: user.name }
-        });
+        console.log("[api/login] login success for:", username);
+        res.json({ ok: true });
     } catch (err) {
-        console.error("[api/auth/login] error", err);
-        res.status(500).json({ error: err.message });
+        console.error("[api/login] error", err);
+        res.status(500).json({ error: "Server error" });
     }
 }
