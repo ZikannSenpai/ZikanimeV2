@@ -1,0 +1,406 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Navbar Kiri */
+.navbar {
+    width: 250px;
+    background-color: #111111;
+    border-right: 1px solid #1e3a5f;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.nav-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid #1e3a5f;
+}
+
+.nav-header h2 {
+    color: #2a6df4;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.nav-header .subtitle {
+    color: #6c8cbf;
+    font-size: 0.8rem;
+}
+
+.user-section {
+    padding: 15px 20px;
+    border-bottom: 1px solid #1e3a5f;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-login,
+.btn-logout {
+    background-color: #2a6df4;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover,
+.btn-logout:hover {
+    background-color: #1a4db4;
+    transform: scale(1.05);
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 20px 0;
+    flex: 1;
+}
+
+.nav-menu li {
+    margin-bottom: 5px;
+}
+
+.nav-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.nav-menu a:hover {
+    background-color: #1a1a2e;
+    border-left-color: #2a6df4;
+    color: white;
+    transform: translateX(5px);
+}
+
+.nav-menu i {
+    width: 25px;
+    color: #2a6df4;
+}
+
+.nav-footer {
+    padding: 20px;
+    font-size: 0.8rem;
+    color: #4a4a4a;
+    text-align: center;
+}
+
+/* Konten Utama */
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #0a0a0a;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #1e3a5f;
+}
+
+.content-header h1 {
+    color: #2a6df4;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #1e3a5f;
+    background-color: #111111;
+    color: white;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #2a6df4;
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(42, 109, 244, 0.3);
+}
+
+.search-box button {
+    background-color: #2a6df4;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-box button:hover {
+    background-color: #1a4db4;
+    transform: rotate(90deg);
+}
+
+/* Grid Anime */
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.anime-card {
+    background-color: #111111;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #1e3a5f;
+}
+
+.anime-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(42, 109, 244, 0.2);
+    border-color: #2a6df4;
+}
+
+.anime-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.anime-info {
+    padding: 10px;
+}
+
+.anime-info h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.anime-info p {
+    font-size: 0.8rem;
+    color: #b0b0b0;
+}
+
+/* Episode List */
+.episode-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.episode-item {
+    background-color: #1a1a2e;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.episode-item:hover {
+    background-color: #2a6df4;
+    transform: scale(1.05);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: #111111;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #2a6df4;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    animation: zoomIn 0.3s;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.episode-modal {
+    max-width: 800px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #2a6df4;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #b0b0b0;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #1e3a5f;
+    background-color: #1a1a2e;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2a6df4;
+    transform: scale(1.02);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#loginBtn {
+    background-color: #2a6df4;
+    color: white;
+}
+
+#registerBtn {
+    background-color: #1a1a2e;
+    color: #2a6df4;
+    border: 1px solid #2a6df4;
+}
+
+#loginBtn:hover,
+#registerBtn:hover {
+    transform: scale(1.05);
+}
+
+.error-message {
+    color: #ff4444;
+    margin-bottom: 10px;
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    color: #2a6df4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        width: 60px;
+    }
+
+    .navbar .nav-header h2,
+    .navbar .subtitle,
+    .navbar .nav-footer,
+    .navbar .nav-menu a span {
+        display: none;
+    }
+
+    .navbar .nav-menu a {
+        padding: 15px;
+        text-align: center;
+    }
+
+    .navbar .nav-menu i {
+        width: auto;
+        font-size: 1.2rem;
+    }
+
+    .content {
+        margin-left: 60px;
+    }
+
+    .user-section {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .user-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
