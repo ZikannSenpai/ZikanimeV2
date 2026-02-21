@@ -15,7 +15,7 @@ export default function Home() {
                     return;
                 }
 
-                const res = await fetch("/api/anime");
+                const res = await fetch("/api/anime/home");
                 console.log("anime status:", res.status);
 
                 const data = await res.json();
