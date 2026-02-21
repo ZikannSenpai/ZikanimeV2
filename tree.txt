@@ -1,0 +1,20 @@
+ZikanimeV2
+├── data
+│   ├── history.json
+│   └── users.json
+├── next.config.js
+├── package-lock.json
+├── package.json
+├── pages
+│   ├── _app.js
+│   ├── api
+│   │   ├── anime.js
+│   │   ├── auth
+│   │   │   ├── login.js
+│   │   │   └── register.js
+│   │   ├── history.js
+│   │   └── user.js
+│   ├── index.js
+│   └── login.js
+└── styles
+    └── style.css

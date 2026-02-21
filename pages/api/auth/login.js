@@ -4,7 +4,7 @@ import path from "path";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const file = path.join(process.cwd(), "data", "users.json");
+const file = path.join(process.cwd(), "tmp", "users.json");
 const JWT_SECRET = process.env.JWT_SECRET || "devsecret";
 
 export default async function handler(req, res) {
