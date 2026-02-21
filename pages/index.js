@@ -6,16 +6,26 @@ export default function Home() {
 
     useEffect(() => {
         const load = async () => {
-            const auth = await fetch("/api/auth/me");
-            if (!auth.ok) {
-                window.location.href = "/login";
-                return;
-            }
+            try {
+                const auth = await fetch("/api/auth/me");
+                console.log("auth status:", auth.status);
 
-            const res = await fetch("/api/anime/home");
-            const data = await res.json();
-            setAnime(data);
-            setLoading(false);
+                if (!auth.ok) {
+                    window.location.href = "/login";
+                    return;
+                }
+
+                const res = await fetch("/api/anime");
+                console.log("anime status:", res.status);
+
+                const data = await res.json();
+                console.log("anime data:", data);
+
+                setAnime(data);
+                setLoading(false);
+            } catch (err) {
+                console.log("error:", err);
+            }
         };
 
         load();
@@ -24,10 +34,9 @@ export default function Home() {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className="grid">
+        <div>
             {anime.map(item => (
-                <div key={item._id} className="card">
-                    <img src={item.image} width="150" />
+                <div key={item._id}>
                     <h3>{item.title}</h3>
                 </div>
             ))}
