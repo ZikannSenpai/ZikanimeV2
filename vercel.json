@@ -1,0 +1,12 @@
+{
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@vercel/next"
+        }
+    ],
+    "env": {
+        "MONGODB_URI": "@mongodb-uri",
+        "JWT_SECRET": "@jwt-secret"
+    }
+}
