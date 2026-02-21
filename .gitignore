@@ -1,5 +1,8 @@
 # .gitignore
+
+.env
 .env.local
+
 /node_modules
 .bash
 tes.js
