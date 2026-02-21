@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { userRouter } from "next/router";
 import Head from "next/head";
 import Script from "next/script";
 
 export default function Home() {
+    const router = userRouter();
     const [loading, setLoading] = useState(true);
+
     const [anime, setAnime] = useState([]);
 
     useEffect(() => {
@@ -68,10 +71,21 @@ export default function Home() {
                 />
             </Head>
 
-            <main>
+            <main className="container">
+                <div className="section-title">
+                    <h2>Ongoing Anime</h2>
+                </div>
+
                 <div className="anime-grid">
                     {anime.map(item => (
-                        <div key={item.animeId} className="anime-card">
+                        <div
+                            key={item.animeId}
+                            className="anime-card"
+                            onClick={() =>
+                                router.push(`/anime/${item.animeId}`)
+                            }
+                            style={{ cursor: "pointer" }}
+                        >
                             <img
                                 src={item.poster}
                                 alt={item.title}
@@ -90,8 +104,9 @@ export default function Home() {
 
                                 <button
                                     className="watch-btn"
-                                    onClick={() => {
-                                        window.location.href = `/anime/${item.animeId}`;
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        router.push(`/anime/${item.animeId}`);
                                     }}
                                 >
                                     Watch Now
