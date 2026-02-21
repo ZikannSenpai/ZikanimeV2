@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
 
-const file = path.join(process.cwd(), "data", "users.json");
+const file = "/tmp/users.json";
 
 export default async function handler(req, res) {
     try {
@@ -12,7 +12,9 @@ export default async function handler(req, res) {
         const { username, password } = req.body;
         if (!username || !password)
             return res.status(400).json({ error: "missing" });
-
+        if (!fs.existsSync(file)) {
+            fs.writeFileSync(file, "[]");
+        }
         const raw = fs.existsSync(file) ? fs.readFileSync(file, "utf-8") : "[]";
         const users = JSON.parse(raw);
 
