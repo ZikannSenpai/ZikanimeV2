@@ -19,9 +19,9 @@ export default function Home() {
                 console.log("anime status:", res.status);
 
                 const data = await res.json();
-                console.log("anime data:", data);
+                console.log("anime data:", data.data);
 
-                setAnime(data);
+                console.log("set:", setAnime(data));
                 setLoading(false);
             } catch (err) {
                 console.log("error:", err);
