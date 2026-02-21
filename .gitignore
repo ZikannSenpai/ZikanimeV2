@@ -1,3 +1,6 @@
+# .gitignore
+.env.local
+.env*.local
 .env
 /node_modules
 .bash
