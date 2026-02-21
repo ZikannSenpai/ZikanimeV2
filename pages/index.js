@@ -19,9 +19,9 @@ export default function Home() {
                 console.log("anime status:", res.status);
 
                 const data = await res.json();
-                console.log("anime data:", data.data);
+                console.log("anime data:", data.data.ongoing);
 
-                console.log("set:", setAnime(data));
+                setAnime(data.data.ongoing.animeList);
                 setLoading(false);
             } catch (err) {
                 console.log("error:", err);
@@ -36,7 +36,7 @@ export default function Home() {
     return (
         <div>
             {anime.map(item => (
-                <div key={item._id}>
+                <div key={item.ongoing}>
                     <h3>{item.title}</h3>
                 </div>
             ))}
