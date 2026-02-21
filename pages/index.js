@@ -12,7 +12,7 @@ export default function Home() {
                 return;
             }
 
-            const res = await fetch("/api/anime");
+            const res = await fetch("/api/anime/home");
             const data = await res.json();
             setAnime(data);
             setLoading(false);
