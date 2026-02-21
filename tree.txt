@@ -1,0 +1,24 @@
+ZikanimeV2/
+├── lib
+│   ├── jwt.js
+│   └── mongodb.js
+├── package-lock.json
+├── package.json
+├── pages
+│   ├── _app.js
+│   ├── api
+│   │   ├── anime
+│   │   │   └── [...slug].js
+│   │   ├── auth
+│   │   │   ├── login.js
+│   │   │   ├── me.js
+│   │   │   └── register.js
+│   │   └── user
+│   │       └── history.js
+│   ├── index.js
+│   ├── login.js
+│   └── register.js
+├── public
+│   └── script.js
+└── styles
+    └── style.css
