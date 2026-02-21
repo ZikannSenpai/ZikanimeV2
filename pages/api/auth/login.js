@@ -1,42 +1,40 @@
 // pages/api/auth/login.js
-import fs from "fs";
-import path from "path";
+import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-
-const file = path.join(process.cwd(), "tmp", "users.json");
-const JWT_SECRET = process.env.JWT_SECRET || "devsecret";
+import { sign } from "../../../lib/jwt";
+import cookie from "cookie";
 
 export default async function handler(req, res) {
-    try {
-        if (req.method !== "POST")
-            return res.status(405).json({ error: "method not allowed" });
-        const { username, password } = req.body;
-        const raw = fs.existsSync(file) ? fs.readFileSync(file, "utf-8") : "[]";
-        const users = JSON.parse(raw);
-        const user = users.find(u => u.username === username);
-        if (!user) return res.status(401).json({ error: "invalid" });
+    if (req.method !== "POST") return res.status(405).end();
+    const { email, password } = req.body;
+    if (!email || !password)
+        return res.status(400).json({ message: "missing" });
 
-        const ok = await bcrypt.compare(password, user.password);
-        if (!ok) return res.status(401).json({ error: "invalid" });
+    const client = await clientPromise;
+    const db = client.db(process.env.DB_NAME || "zikanime");
+    const users = db.collection("users");
+    const user = await users.findOne({ email });
+    if (!user) return res.status(401).json({ message: "invalid" });
 
-        const token = jwt.sign(
-            { id: user.id, username: user.username },
-            JWT_SECRET,
-            { expiresIn: "7d" }
-        );
-        // return token to client; client will store in localStorage
-        res.status(200).json({
-            ok: true,
-            token,
-            user: {
-                id: user.id,
-                username: user.username,
-                profile: user.profile
-            }
-        });
-    } catch (err) {
-        console.error("login error:", err);
-        res.status(500).json({ error: "server error" });
-    }
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) return res.status(401).json({ message: "invalid" });
+
+    const token = sign({
+        sub: user._id.toString(),
+        username: user.username,
+        email: user.email
+    });
+    res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("zktoken", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7
+        })
+    );
+    res.json({
+        user: { _id: user._id, username: user.username, email: user.email }
+    });
 }

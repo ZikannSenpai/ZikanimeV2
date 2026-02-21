@@ -1,46 +1,23 @@
 // pages/api/auth/register.js
-import fs from "fs";
-import path from "path";
+import clientPromise from "../../../lib/mongodb";
 import bcrypt from "bcryptjs";
 
-const file = "/tmp/users.json";
-
 export default async function handler(req, res) {
-    try {
-        if (req.method !== "POST")
-            return res.status(405).json({ error: "method not allowed" });
-        const { username, password } = req.body;
-        if (!username || !password)
-            return res.status(400).json({ error: "missing" });
-        if (!fs.existsSync(file)) {
-            fs.writeFileSync(file, "[]");
-        }
-        const raw = fs.existsSync(file) ? fs.readFileSync(file, "utf-8") : "[]";
-        const users = JSON.parse(raw);
+    if (req.method !== "POST") return res.status(405).end();
+    const { username, email, password } = req.body;
+    if (!username || !email || !password)
+        return res.status(400).json({ message: "missing" });
 
-        if (users.find(u => u.username === username))
-            return res.status(409).json({ error: "exists" });
+    const client = await clientPromise;
+    const db = client.db(process.env.DB_NAME || "zikanime");
+    const users = db.collection("users");
+    const exists = await users.findOne({ $or: [{ email }, { username }] });
+    if (exists) return res.status(409).json({ message: "User exists" });
 
-        const hash = await bcrypt.hash(password, 10);
-        const user = {
-            id: Date.now().toString(),
-            username,
-            password: hash,
-            profile: { displayName: username },
-            createdAt: new Date().toISOString()
-        };
-        users.push(user);
-        fs.writeFileSync(file, JSON.stringify(users, null, 2));
-        res.status(201).json({
-            ok: true,
-            user: {
-                id: user.id,
-                username: user.username,
-                profile: user.profile
-            }
-        });
-    } catch (err) {
-        console.error("register error:", err);
-        res.status(500).json({ error: "server error" });
-    }
+    const hash = await bcrypt.hash(password, 10);
+    const user = { username, email, password: hash, createdAt: new Date() };
+    const r = await users.insertOne(user);
+    delete user.password;
+    user._id = r.insertedId;
+    res.status(201).json({ user });
 }

@@ -1,36 +1,46 @@
-// pages/login.js
+// pages/register.js
 import Head from "next/head";
 import { useState } from "react";
 
-export default function Login() {
+export default function Register() {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = async e => {
+    const handleRegister = async e => {
         e.preventDefault();
 
-        const res = await fetch("/api/auth/login", {
+        const res = await fetch("/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ username, email, password })
         });
 
         if (res.ok) {
-            window.location.href = "/";
+            alert("Register berhasil, silakan login");
+            window.location.href = "/login";
         } else {
-            alert("Login gagal");
+            alert("Register gagal");
         }
     };
 
     return (
         <>
             <Head>
-                <title>Login | Zikanime</title>
+                <title>Register | Zikanime</title>
             </Head>
 
             <div style={wrapper}>
-                <form onSubmit={handleLogin} style={card}>
-                    <h2>Login</h2>
+                <form onSubmit={handleRegister} style={card}>
+                    <h2>Register</h2>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        required
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        style={input}
+                    />
                     <input
                         type="email"
                         placeholder="Email"
@@ -48,10 +58,10 @@ export default function Login() {
                         style={input}
                     />
                     <button type="submit" style={button}>
-                        Masuk
+                        Daftar
                     </button>
                     <p>
-                        Belum punya akun? <a href="/register">Daftar</a>
+                        Sudah punya akun? <a href="/login">Login</a>
                     </p>
                 </form>
             </div>
