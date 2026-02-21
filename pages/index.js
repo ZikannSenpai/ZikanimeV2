@@ -36,7 +36,7 @@ export default function Home() {
     return (
         <div>
             {anime.map(item => (
-                <div key={item.ongoing}>
+                <div key={item.animeId}>
                     <h3>{item.title}</h3>
                 </div>
             ))}
