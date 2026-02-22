@@ -658,22 +658,3 @@ footer {
 }
 
 /* fade in utility (sudah ada .anime-card.fade-in) */
-
-.user-menu {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-color);
-}
-
-.user-menu button {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    cursor: pointer;
-    font-size: 1.2rem;
-}
-
-.user-menu button:hover {
-    color: var(--accent-color);
-}
