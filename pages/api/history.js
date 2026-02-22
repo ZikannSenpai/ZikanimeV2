@@ -1,6 +1,6 @@
 // pages/api/history/add.js
 import jwt from "jsonwebtoken";
-import { connectToDatabase } from "../../../lib/mongodb";
+import { connectToDatabase } from "../../lib/mongodb";
 
 function getTokenFromReq(req) {
     const cookie = req.headers.cookie || "";
