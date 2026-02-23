@@ -1,40 +1,41 @@
-// pages/api/auth/login.js
-import { connectToDatabase } from "../../../lib/mongodb";
+import dbConnect from "../../../lib/db";
+import User from "../../../models/User";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
+import { setCookie, generateToken } from "../../../lib/auth";
 
 export default async function handler(req, res) {
-    if (req.method !== "POST") return res.status(405).end();
-    const { emailOrUsername, password } = req.body || {};
-    if (!emailOrUsername || !password)
-        return res.status(400).json({ error: "missing" });
+    if (req.method !== "POST") {
+        return res.status(405).json({ message: "Method not allowed" });
+    }
 
-    const { db } = await connectToDatabase();
-    const user = await db.collection("users").findOne({
-        $or: [{ email: emailOrUsername }, { username: emailOrUsername }]
-    });
-    if (!user) return res.status(401).json({ error: "invalid" });
+    await dbConnect();
 
-    const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return res.status(401).json({ error: "invalid" });
+    const { email, password } = req.body;
 
-    const token = jwt.sign(
-        { sub: String(user._id), username: user.username },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-    );
+    if (!email || !password) {
+        return res.status(400).json({ message: "Please fill all fields" });
+    }
 
-    res.setHeader(
-        "Set-Cookie",
-        serialize("zikanime_token", token, {
-            httpOnly: true,
-            path: "/",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 60 * 60 * 24 * 7,
-            sameSite: "lax"
-        })
-    );
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
 
-    res.json({ success: true });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        const token = generateToken(user);
+        setCookie(res, token);
+
+        res.status(200).json({
+            message: "Login successful",
+            user: { id: user._id, username: user.username, email: user.email }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 }

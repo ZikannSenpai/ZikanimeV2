@@ -1,14 +1,10 @@
-// pages/api/auth/logout.js
-import { serialize } from "cookie";
-export default function handler(req, res) {
-    res.setHeader(
-        "Set-Cookie",
-        serialize("zikanime_token", "", {
-            httpOnly: true,
-            path: "/",
-            expires: new Date(0),
-            sameSite: "lax"
-        })
-    );
-    res.json({ success: true });
+import { removeCookie } from "../../../lib/auth";
+
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({ message: "Method not allowed" });
+    }
+
+    removeCookie(res);
+    res.status(200).json({ message: "Logout successful" });
 }

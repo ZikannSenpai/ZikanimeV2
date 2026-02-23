@@ -1,5 +1,5 @@
 import dbConnect from "../../../lib/db";
-import User from "../../../models/User";
+import History from "../../../models/History";
 import { verifyToken } from "../../../lib/auth";
 
 export default async function handler(req, res) {
@@ -20,12 +20,10 @@ export default async function handler(req, res) {
     await dbConnect();
 
     try {
-        const user = await User.findById(decoded.id).select("-password");
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        res.status(200).json({ user });
+        const last = await History.findOne({ userId: decoded.id })
+            .sort({ watchedAt: -1 })
+            .limit(1);
+        res.status(200).json({ last });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
