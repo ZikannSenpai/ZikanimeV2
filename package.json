@@ -19,7 +19,7 @@
         "react-dom": "^18.3.0"
     },
     "devDependencies": {
-        "autoprefixer": "^11.0.0",
+        "autoprefixer": "latest",
         "postcss": "^8.5.0",
         "tailwindcss": "^4.1.0"
     }
