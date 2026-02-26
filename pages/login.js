@@ -1,83 +1,51 @@
-import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/router";
-
-export default function Login() {
-    const [email, setEmail] = useState("");
+export default function Login({ user, setUser }) {
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const { login, user } = useAuth();
+    const [err, setErr] = useState("");
     const router = useRouter();
-
-    useEffect(() => {
-        if (user) {
-            router.push("/");
-        }
-    }, [user]);
-
-    const handleSubmit = async e => {
+    if (typeof window !== "undefined" && localStorage.getItem("token"))
+        router.replace("/");
+    async function submit(e) {
         e.preventDefault();
-        setError("");
-        const res = await login(email, password);
-        if (res.message && !res.user) {
-            setError(res.message);
+        setErr("");
+        const r = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+        const j = await r.json();
+        if (!r.ok) {
+            setErr(j.message || "Login gagal");
+            return;
         }
-    };
-
+        localStorage.setItem("token", j.token);
+        setUser && setUser(j.user);
+        router.push("/");
+    }
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
-            <div className="bg-[#12121a] p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h1 className="text-3xl font-bold text-white mb-6 text-center">
-                    <span className="text-[#0d6efd]">Zik</span>Anime Login
-                </h1>
-                {error && (
-                    <div className="bg-red-500 text-white p-3 rounded mb-4">
-                        {error}
-                    </div>
-                )}
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-300 mb-2">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            className="w-full p-3 rounded bg-[#0a0a0f] text-white border border-gray-700 focus:outline-none focus:border-[#0d6efd]"
-                            required
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <label className="block text-gray-300 mb-2">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            className="w-full p-3 rounded bg-[#0a0a0f] text-white border border-gray-700 focus:outline-none focus:border-[#0d6efd]"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-[#0d6efd] text-white p-3 rounded hover:bg-[#0b5ed7] transition"
-                    >
-                        Login
-                    </button>
-                </form>
-                <p className="text-gray-400 mt-4 text-center">
-                    Belum punya akun?{" "}
-                    <Link
-                        href="/register"
-                        className="text-[#0d6efd] hover:underline"
-                    >
-                        Register
-                    </Link>
-                </p>
-            </div>
-        </div>
+        <main className="container mx-auto p-6">
+            <h1 className="text-3xl mb-4">Login</h1>
+            <form onSubmit={submit} className="max-w-md">
+                <input
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    placeholder="username"
+                    className="w-full mb-3 p-3 rounded bg-card-bg"
+                />
+                <input
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    type="password"
+                    placeholder="password"
+                    className="w-full mb-3 p-3 rounded bg-card-bg"
+                />
+                <button className="px-4 py-2 bg-accent rounded text-white">
+                    Login
+                </button>
+                {err && <p className="text-red-400 mt-3">{err}</p>}
+            </form>
+        </main>
     );
 }

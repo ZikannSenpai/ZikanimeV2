@@ -1,46 +1,18 @@
-import dbConnect from "../../../lib/db";
+import dbConnect from "../../../lib/mongodb";
 import User from "../../../models/User";
 import bcrypt from "bcryptjs";
-import { setCookie, generateToken } from "../../../lib/auth";
 
 export default async function handler(req, res) {
-    if (req.method !== "POST") {
+    if (req.method !== "POST")
         return res.status(405).json({ message: "Method not allowed" });
-    }
-
+    const { username, email, password } = req.body || {};
+    if (!username || !password)
+        return res.status(400).json({ message: "Missing fields" });
     await dbConnect();
-
-    const { username, email, password } = req.body;
-
-    if (!username || !email || !password) {
-        return res.status(400).json({ message: "Please fill all fields" });
-    }
-
-    try {
-        const existingUser = await User.findOne({
-            $or: [{ email }, { username }]
-        });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const user = await User.create({
-            username,
-            email,
-            password: hashedPassword
-        });
-
-        const token = generateToken(user);
-        setCookie(res, token);
-
-        res.status(201).json({
-            message: "User created",
-            user: { id: user._id, username: user.username, email: user.email }
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+    const exists = await User.findOne({ username });
+    if (exists) return res.status(409).json({ message: "Username taken" });
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    const u = await User.create({ username, email, passwordHash: hash });
+    res.status(201).json({ id: u._id, username: u.username, email: u.email });
 }

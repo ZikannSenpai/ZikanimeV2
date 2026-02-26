@@ -1,26 +1,23 @@
-import React from "react";
-
-export default function AnimeCard({ anime, onClick }) {
+import Link from "next/link";
+export default function AnimeCard({ anime }) {
     return (
-        <div className="anime-card" onClick={() => onClick(anime)}>
+        <div className="anime-card fade-in cursor-pointer">
             <img
-                src={anime.poster || "/placeholder.jpg"}
+                src={anime.thumb || anime.image}
                 alt={anime.title}
                 className="anime-poster"
-                onError={e => {
-                    e.target.src = "/placeholder.jpg";
-                }}
             />
             <div className="anime-info">
                 <h3 className="anime-title">{anime.title}</h3>
                 <div className="anime-meta">
-                    <span>{anime.episodes || "?"} eps</span>
-                    <span className="anime-rating">
-                        <i className="fas fa-star"></i> {anime.rating || "N/A"}
-                    </span>
+                    <span className="anime-type">{anime.type || "TV"}</span>
+                    <span className="anime-rating">{anime.rating || "—"}</span>
                 </div>
-                <div className="anime-type">{anime.type || "Anime"}</div>
-                <button className="watch-btn">Tonton</button>
+                <Link
+                    href={`/anime/${anime.endpoint || anime.slug || anime.id}`}
+                >
+                    <button className="watch-btn">Tonton</button>
+                </Link>
             </div>
         </div>
     );
