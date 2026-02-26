@@ -11,9 +11,9 @@
     "dependencies": {
         "axios": "^1.5.0",
         "bcryptjs": "^2.4.3",
-        "jsonwebtoken": "^9.0.0",
-        "mongodb": "^6.8.0",
-        "mongoose": "^7.9.0",
+        "jsonwebtoken": "latest",
+        "mongodb": "latest",
+        "mongoose": "^latest",
         "next": "^16.1.6",
         "react": "^18.3.0",
         "react-dom": "^18.3.0"
