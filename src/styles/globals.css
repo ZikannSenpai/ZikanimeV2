@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#__next {
+    height: 100%;
+}
+body {
+    background: linear-gradient(
+        180deg,
+        rgba(11, 15, 20, 0.95),
+        rgba(2, 6, 9, 0.95)
+    );
+    color: #e6eef6;
+    font-family: Inter, ui-sans-serif, system-ui;
+}
+.card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+}
+.fade-zoom {
+    transition:
+        transform 0.18s ease,
+        opacity 0.18s ease;
+}
+.fade-zoom:active {
+    transform: scale(0.98);
+    opacity: 0.96;
+}

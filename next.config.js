@@ -2,8 +2,11 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ["www.sankavollerei.com"] // jika gambar dari domain tersebut
+        domains: [
+            "sankavollerei.com",
+            "cdn.sankavollerei.com",
+            "img.sankanime.com"
+        ]
     }
 };
-
 module.exports = nextConfig;
