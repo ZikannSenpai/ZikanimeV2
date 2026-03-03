@@ -1,1 +1,1 @@
-dclare module "bcryptjs";
+declare module "bcryptjs";
