@@ -1,0 +1,1 @@
+dclare module "jsonwebtoken";
